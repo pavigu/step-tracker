@@ -1,3 +1,8 @@
+/**
+ * Класс основной логики прототипа и хранения и обработки статистики по месяцам
+ * @autor Павел Игушкин, p@devlpr.ru, Telegram: @igush
+ */
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.HashMap;
@@ -8,11 +13,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StepTracker {
+
+    /** Хеш-карта для хранения статистики по месяцам */
     static HashMap<String, int[]> months = new HashMap<>(); // Хеш-карта со статистикой по всем месяцам (ключ: месяц, значение: массив со статистикой по месяцу)
+
+    /** Поле цель (шагов/день) */
     static int dailyGoal = 10_000; // значение по умолчанию ежедневной цели по шагам
 
     /**
-     * Метод ввода статистики шагов с указанием даты
+     * Метод ввода количества шагов за день с указанием даты
+     * Проверка формата даты важна, чтобы привести к единому формату ключи хеш-карты months
      */
     public static void inputSteps() {
         while (true) {
@@ -42,16 +52,16 @@ public class StepTracker {
 
     /**
      * Метод ввода статистики шагов без указания даты
+     * Нужен, если в меню выбраны «сегодня» или «вчера», дата генерируется за пользователя автоматически
      */
     public static void inputSteps(String YearMonthDay) {
-        String date = YearMonthDay;
         while (true) {
-            System.out.println("Введите, сколько шагов прошли " + date + ":");
+            System.out.println("Введите, сколько шагов прошли " + YearMonthDay + ":");
             Scanner scanner = new Scanner(System.in);
             if (scanner.hasNextInt()) {
                 int stepsPerDay = scanner.nextInt();
-                addStatisticsRecord(date, stepsPerDay); // добавить дату и введённые шаги в статистику
-                System.out.println("Статистика обновлена. " + date + ": " + stepsPerDay + " \uD83D\uDC63");
+                addStatisticsRecord(YearMonthDay, stepsPerDay); // добавить дату и введённые шаги в статистику
+                System.out.println("Статистика обновлена. " + YearMonthDay + ": " + stepsPerDay + " \uD83D\uDC63");
                 break;
             } else
                 System.err.println("Нужно ввести целое число.");
@@ -82,10 +92,12 @@ public class StepTracker {
      * Метод печати списка всех месяцев, по которым есть статистика
      */
     public static void printAllMonths() {
-        System.out.println("\nСписок всех месяцев, по которым есть статистика:");
-        // Сортировка списка ключей хеш-карты (без этого выводятся не по порядку)
-        Map sortedMonths = new TreeMap<>(months);
-        sortedMonths.keySet().forEach(System.out::println);
+        System.out.println("Список всех месяцев, по которым есть статистика:");
+        // Сортировка списка ключей хеш-карты (без этого ключи хещ-карты выводятся не по порядку)
+        Map<String, int[]> sortedMonths = new TreeMap<>(months);
+        for (String s : sortedMonths.keySet()) {
+            System.out.println(s);
+        }
     }
 
     /**
@@ -126,7 +138,7 @@ public class StepTracker {
         System.out.println(totalSteps + " \uD83D\uDC63 всего");
 
         // Среднее количество шагов в день:
-        int avgStepsPerDay = 0, records = 0;
+        int avgStepsPerDay, records = 0;
         for (int i = 0; i < months.get(month).length; i++) {
             if (months.get(month)[i] != 0)
                 records += 1;
@@ -197,25 +209,23 @@ public class StepTracker {
     }
 
     /**
-     * Метод получения текущего месяца вида 2022-05
+     * Метод получения текущего месяца вида 2022-05 (именно с нулём в начале, если в числе месяца 1 цифра)
      */
     public static String getThisMonth() {
         LocalDate yearMonthDay = LocalDate.now(); // получение сегодняшней даты в формате 2022-05-01
         // Разбиение строки с датой вида "2022-05-10" на подстроки "2022", "05", "10"
-        String[] parts = String.valueOf(yearMonthDay).split("-");
-        String yearMonth = parts[0] + "-" + parts[1]; // "2022-05"
-        return yearMonth;
+        var parts = String.valueOf(yearMonthDay).split("-");
+        return parts[0] + "-" + parts[1]; // "2022-05"
     }
 
     /**
-     * Метод получения предыдущего месяца вида 2022-04
+     * Метод получения предыдущего месяца вида 2022-04 (именно с нулём в начале, если в числе месяца 1 цифра)
      */
     public static String getPreviousMonth() {
         LocalDate yearMonthDay = LocalDate.now(); // получение сегодняшней даты в формате 2022-05-01
         LocalDate yearPreviousMonthDay = yearMonthDay.minus(Period.ofMonths(1)); // замена месяца даты на предыдуший
         // Разбиение строки с датой вида "2022-04-10" на подстроки "2022", "04", "10"
         String[] parts = String.valueOf(yearPreviousMonthDay).split("-");
-        String yearPreviousMonth = parts[0] + "-" + parts[1]; // "2022-04"
-        return yearPreviousMonth;
+        return parts[0] + "-" + parts[1]; // "2022-05"
     }
 }

@@ -1,3 +1,8 @@
+/**
+ * Класс главного меню прототипа
+ * @autor Павел Игушкин, p@devlpr.ru, Telegram: @igush
+ */
+
 import java.time.LocalDate;
 import java.util.Random;
 import java.util.Scanner;
@@ -13,16 +18,17 @@ public class Main {
     }
 
     /**
-     * Метод главного меню
+     * Метод вывода главного меню
      */
     public static void menu() {
         while (true) {
+            System.out.println("""
+                    Введите команду:
+                    1 — ввести количество шагов
+                    2 — показать статистику
+                    3 — настроить ежедневную цель
+                    4 — выйти""");
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Введите команду:\n" +
-                    "1 — ввести количество шагов\n" +
-                    "2 — показать статистику\n" +
-                    "3 — настроить ежедневную цель\n" +
-                    "4 — выйти");
             int command;
             if (scanner.hasNextInt()) { // Если введено целое число
                 command = scanner.nextInt();
@@ -36,27 +42,29 @@ public class Main {
                     System.out.println("Хороших шагов!\n" +
                             "Программа завершена");
                     return;
+                } else {
+                    System.err.println("Введите номер команды из предложенных.");
                 }
             } else { // Если введено не целое число
                 System.err.println("Команды нужно вводить числом.");
-                continueProgramExecution();
             }
         }
     }
 
     /**
-     * Метод работы команды меню → 1 — ввести количество шагов
+     * Метод обработки команды 1 — ввести количество шагов
      */
     public static void numberOfSteps() {
         int command;
-        String date = null; // дата
-        int numberOfSteps = 0; // шагов за эту дату
+        String date; // дата
+        int numberOfSteps; // шагов за эту дату
         while (true) {
             System.out.println("За какой день ввести количество шагов?");
-            System.out.println("1 — за сегодня\n" +
-                    "2 — за вчера\n" +
-                    "3 — за другую дату\n" +
-                    "4 — назад");
+            System.out.println("""
+                    1 — за сегодня
+                    2 — за вчера
+                    3 — за другую дату
+                    4 — назад""");
             Scanner scanner = new Scanner(System.in);
             if (scanner.hasNextInt()) {
                 command = scanner.nextInt();
@@ -87,23 +95,24 @@ public class Main {
                     System.out.println("Ввод значений отменён.");
                     return;
                 } else
-                    System.err.println("Выберите команду и вводите числом");
+                    System.err.println("Введите номер команды из предложенных.");
             } else
                 System.err.println("Введите команду числом.");
         }
     }
 
     /**
-     * Метод работы команды меню → 2 — показать статистику
+     * Метод обработки команды 2 — показать статистику
      */
     public static void statistics() {
         int command;
         while (true) {
             System.out.println("За какой месяц показать статистику?");
-            System.out.println("1 — за этот\n" +
-                    "2 — за прошлый\n" +
-                    "3 — выбрать месяц\n" +
-                    "4 — назад");
+            System.out.println("""
+                    1 — за этот
+                    2 — за прошлый
+                    3 — выбрать месяц
+                    4 — назад""");
             String month;
             Scanner scanner = new Scanner(System.in);
             if (scanner.hasNextInt()) {
@@ -131,22 +140,21 @@ public class Main {
                     month = StepTracker.selectMonth();
                     StepTracker.printOneMonth(month);
                     continueProgramExecution();
+                    break;
                 } else if (command == 4) {
                     return;
                 } else
-                    System.err.println("Введите команду из предложенных.");
-                break;
+                    System.err.println("Введите номер команды из предложенных.");
             } else
                 System.err.println("Введите команду числом.");
         }
     }
 
     /**
-     *  Метод работы команды меню → 3 — настроить ежедневную цель
+     *  Метод обработки команды 3 — настроить ежедневную цель
      */
     public static void dailyGoal() {
         int command;
-        int currentDailyGoal = 10000;
         while (true) {
             StepTracker.printDailyGoal();
             System.out.println("1 — установить новую цель\n" +
@@ -154,15 +162,15 @@ public class Main {
             Scanner scanner = new Scanner(System.in);
             if (scanner.hasNextInt()) {
                 command = scanner.nextInt();
-                if (command == 1) {
+                if (command == 1) { // Команда 1 — установить новую цель
                     StepTracker.changeDailyGoal();
                     continueProgramExecution();
                     break;
-                } else if (command == 2) {
+                } else if (command == 2) { // Команда 2 — назад
                     System.out.println("Изменение ежедневной цели отменено.");
                     return;
                 } else {
-                    System.err.println("Введите команду из предложенных.");
+                    System.err.println("Введите номер команды из предложенных.");
                 }
             } else {
                 System.err.println("Введите команду числом.");
@@ -171,21 +179,21 @@ public class Main {
     }
 
     /**
-     * Метод вызова команды «Нажмите 1, чтобы продолжить»
+     * Метод обработки команды «Нажмите 1, чтобы продолжить»
      */
     public static void continueProgramExecution() {
         System.out.println("1 — далее");
         int command;
-        while (true) { // Повторять всегда
+        while (true) {
             Scanner scanner = new Scanner(System.in);
             if (scanner.hasNextInt()) {
                 command = scanner.nextInt();
-                if (command == 1) // если введённая команда — 1
-                    return; // прервать цикл
+                if (command == 1)
+                    return;
                 else
-                    System.out.println("Введите 1, чтобы продолжить"); // сообщение, если введённая команда не 1
+                    System.err.println("Введите 1, чтобы продолжить"); // сообщение, если введённая команда не 1
             } else
-                System.out.println("Введите 1, чтобы продолжить"); // сообщение, если введённая команда не целое число
+                System.err.println("Введите 1, чтобы продолжить"); // сообщение, если введённая команда не целое число
         }
     }
 
@@ -193,7 +201,7 @@ public class Main {
      * Метод заполнения месяца рандомной статистикой для теста
      */
     public static void fillRandomStatistics(String month, int minRandomValueOfSteps, int maxRandomValueOfSteps) {
-        StepTracker.addMonth(month); // создать новый месяц
+        StepTracker.addMonth(month);
         Random r = new Random();
         for (int i = 0; i < StepTracker.months.get(month).length; i++) {
             StepTracker.months.get(month)[i] = r.nextInt(minRandomValueOfSteps, maxRandomValueOfSteps);
@@ -204,7 +212,7 @@ public class Main {
      * Метод заполнения месяца рандомной статистикой для теста с указанием числа месяца, до которого нужно заполнить
      */
     public static void fillRandomStatistics(String month, int finishday, int minRandomValueOfSteps, int maxRandomValueOfSteps) {
-        StepTracker.addMonth(month); // создать новый месяц
+        StepTracker.addMonth(month);
         Random r = new Random();
         for (int i = 0; i <= finishday; i++) {
             StepTracker.months.get(month)[i] = r.nextInt(minRandomValueOfSteps, maxRandomValueOfSteps);
