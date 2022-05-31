@@ -1,6 +1,6 @@
 /**
  * Класс главного меню прототипа
- * @autor Павел Игушкин, p@devlpr.ru, Telegram: @igush
+ * @autor Павел Игушкин (p@devlpr.ru)
  */
 
 import java.time.LocalDate;

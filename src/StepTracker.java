@@ -1,6 +1,7 @@
 /**
  * Класс основной логики прототипа и хранения и обработки статистики по месяцам
- * @autor Павел Игушкин, p@devlpr.ru, Telegram: @igush
+ *
+ * @autor Павел Игушкин (p@devlpr.ru)
  */
 
 import java.time.LocalDate;
