@@ -1,26 +1,18 @@
-/**
- * Класс главного меню прототипа
- * @autor Павел Игушкин (p@devlpr.ru)
- */
-
 import java.time.LocalDate;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        { // Заполнение памяти программы случайной статистикой для теста
+        {
             fillRandomStatistics("2022-05", 20, 9000, 13000);
             fillRandomStatistics("2022-04", 9000, 13000);
             fillRandomStatistics("2022-03", 9000, 13000);
         }
-        menu(); // главное меню
+        menu();
     }
 
-    /**
-     * Метод вывода главного меню
-     */
-    public static void menu() {
+    private static void menu() {
         while (true) {
             System.out.println("""
                     Введите команду:
@@ -33,11 +25,11 @@ public class Main {
             if (scanner.hasNextInt()) { // Если введено целое число
                 command = scanner.nextInt();
                 if (command == 1) { // команда 1 — ввести количество шагов
-                    numberOfSteps();
+                    enterNumberOfSteps();
                 } else if (command == 2) { // команда 2 — показать статистику
-                    statistics();
+                    showStatistics();
                 } else if (command == 3) { // команда 3 — настроить ежедневную цель
-                    dailyGoal();
+                    setDailyGoal();
                 } else if (command == 4) { // команда 4 — выйти
                     System.out.println("Хороших шагов!\n" +
                             "Программа завершена");
@@ -51,13 +43,10 @@ public class Main {
         }
     }
 
-    /**
-     * Метод обработки команды 1 — ввести количество шагов
-     */
-    public static void numberOfSteps() {
+    private static void enterNumberOfSteps() {
         int command;
-        String date; // дата
-        int numberOfSteps; // шагов за эту дату
+        String date;
+        int numberOfSteps;
         while (true) {
             System.out.println("За какой день ввести количество шагов?");
             System.out.println("""
@@ -68,28 +57,25 @@ public class Main {
             Scanner scanner = new Scanner(System.in);
             if (scanner.hasNextInt()) {
                 command = scanner.nextInt();
-
-                // сегодняшняя дата в формате 2022-05-04 (4 мая 2022)
-                LocalDate todayDate = LocalDate.now();
-
-                // вчерашняя дата в формате 2022-05-03 (3 мая 2022)
+                
+                LocalDate todayDate = LocalDate.now(); // format: 2022-05-04 (4 мая 2022)
                 LocalDate yesterdayDate = LocalDate.of(todayDate.getYear(), todayDate.getMonth(), todayDate.getDayOfMonth() - 1);
 
                 if (command == 1) { // Команда 1 — ввод данных за сегодня
                     date = String.valueOf(todayDate);
                     System.out.println("Выбрана сегодняшняя дата — " + date + ".");
                     StepTracker.inputSteps(date);
-                    continueProgramExecution();
+                    pause();
                     break;
                 } else if (command == 2) { // Команда 2 — ввод данных за вчера
                     date = String.valueOf(yesterdayDate);
                     System.out.println("Выбрана вчерашняя дата — " + date + ".");
                     StepTracker.inputSteps(date);
-                    continueProgramExecution();
+                    pause();
                     break;
                 } else if (command == 3) { // Команда 3 — ввод данных за другую дату
                     StepTracker.inputSteps();
-                    continueProgramExecution();
+                    pause();
                     break;
                 } else if (command == 4) { // Команда 4 — назад
                     System.out.println("Ввод значений отменён.");
@@ -101,10 +87,7 @@ public class Main {
         }
     }
 
-    /**
-     * Метод обработки команды 2 — показать статистику
-     */
-    public static void statistics() {
+    private static void showStatistics() {
         int command;
         while (true) {
             System.out.println("За какой месяц показать статистику?");
@@ -121,25 +104,25 @@ public class Main {
                     month = StepTracker.getThisMonth();
                     if (!(StepTracker.months.containsKey(month))) { // если за текущий месяц нет статистики
                         System.err.println("За текущий месяц ещё нет статистики.");
-                        statistics();
+                        showStatistics();
                     } else {
-                        StepTracker.printOneMonth(month);
-                        continueProgramExecution();
+                        StepTracker.printStatisticsForOneMonth(month);
+                        pause();
                     }
                 } else if (command == 2) { // 2 - за прошлый месяц
                     month = StepTracker.getPreviousMonth();
                     if (!(StepTracker.months.containsKey(month))) { // если за текущий месяц нет статистики
                         System.err.println("За прошлый месяц нет статистики.");
-                        statistics();
+                        showStatistics();
                     } else {
-                        StepTracker.printOneMonth(month);
-                        continueProgramExecution();
+                        StepTracker.printStatisticsForOneMonth(month);
+                        pause();
                     }
                 } else if (command == 3) {
                     StepTracker.printAllMonths();
                     month = StepTracker.selectMonth();
-                    StepTracker.printOneMonth(month);
-                    continueProgramExecution();
+                    StepTracker.printStatisticsForOneMonth(month);
+                    pause();
                     break;
                 } else if (command == 4) {
                     return;
@@ -150,10 +133,7 @@ public class Main {
         }
     }
 
-    /**
-     *  Метод обработки команды 3 — настроить ежедневную цель
-     */
-    public static void dailyGoal() {
+    private static void setDailyGoal() {
         int command;
         while (true) {
             StepTracker.printDailyGoal();
@@ -164,7 +144,7 @@ public class Main {
                 command = scanner.nextInt();
                 if (command == 1) { // Команда 1 — установить новую цель
                     StepTracker.changeDailyGoal();
-                    continueProgramExecution();
+                    pause();
                     break;
                 } else if (command == 2) { // Команда 2 — назад
                     System.out.println("Изменение ежедневной цели отменено.");
@@ -178,10 +158,7 @@ public class Main {
         }
     }
 
-    /**
-     * Метод обработки команды «Нажмите 1, чтобы продолжить»
-     */
-    public static void continueProgramExecution() {
+    private static void pause() {
         System.out.println("1 — далее");
         int command;
         while (true) {
@@ -197,10 +174,7 @@ public class Main {
         }
     }
 
-    /**
-     * Метод заполнения месяца рандомной статистикой для теста
-     */
-    public static void fillRandomStatistics(String month, int minRandomValueOfSteps, int maxRandomValueOfSteps) {
+    private static void fillRandomStatistics(String month, int minRandomValueOfSteps, int maxRandomValueOfSteps) {
         StepTracker.addMonth(month);
         Random r = new Random();
         for (int i = 0; i < StepTracker.months.get(month).length; i++) {
@@ -208,13 +182,10 @@ public class Main {
         }
     }
 
-    /**
-     * Метод заполнения месяца рандомной статистикой для теста с указанием числа месяца, до которого нужно заполнить
-     */
-    public static void fillRandomStatistics(String month, int finishday, int minRandomValueOfSteps, int maxRandomValueOfSteps) {
+    private static void fillRandomStatistics(String month, int finishDay, int minRandomValueOfSteps, int maxRandomValueOfSteps) {
         StepTracker.addMonth(month);
         Random r = new Random();
-        for (int i = 0; i <= finishday; i++) {
+        for (int i = 0; i <= finishDay; i++) {
             StepTracker.months.get(month)[i] = r.nextInt(minRandomValueOfSteps, maxRandomValueOfSteps);
         }
     }
