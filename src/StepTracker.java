@@ -29,11 +29,11 @@ public class StepTracker {
                         System.out.println("Статистика обновлена. " + date + ": " + stepsPerDay + " \uD83D\uDC63");
                         break;
                     } else
-                        System.err.println("Нужно ввести целое число.");
+                        System.out.println("[!] Нужно ввести целое число.");
                 }
                 break;
             } else
-                System.err.println("Некорректный формат ввода даты.");
+                System.out.println("[!] Некорректный формат ввода даты.");
         }
     }
 
@@ -47,7 +47,7 @@ public class StepTracker {
                 System.out.println("Статистика обновлена. " + уearMonthDay + ": " + stepsPerDay + " \uD83D\uDC63");
                 break;
             } else
-                System.err.println("Нужно ввести целое число.");
+                System.out.println("[!] Нужно ввести целое число.");
         }
     }
 
@@ -85,11 +85,11 @@ public class StepTracker {
             Matcher matcher = monthPattern.matcher(month);
             if (matcher.matches()) {
                 if (!(months.containsKey(month))) {
-                    System.err.println("На такой месяц нет статистики.");
+                    System.out.println("[!] На такой месяц нет статистики.");
                 } else
                     return month;
             } else
-                System.err.println("Некорректный формат ввода месяца.");
+                System.out.println("[!] Некорректный формат ввода месяца.");
         }
     }
 
@@ -166,7 +166,7 @@ public class StepTracker {
                 System.out.println("Установлена новая цель: " + dailyGoal + " \uD83D\uDC63/день");
                 break;
             } else
-                System.err.println("Введите целое число.");
+                System.out.println("[!] Введите целое число.");
         }
     }
 

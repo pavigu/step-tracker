@@ -35,10 +35,10 @@ public class Main {
                             "Программа завершена");
                     return;
                 } else {
-                    System.err.println("Введите номер команды из предложенных.");
+                    System.out.println("[!] Введите номер команды из предложенных.");
                 }
             } else { // Если введено не целое число
-                System.err.println("Команды нужно вводить числом.");
+                System.out.println("[!] Команды нужно вводить числом.");
             }
         }
     }
@@ -46,7 +46,6 @@ public class Main {
     private static void enterNumberOfSteps() {
         int command;
         String date;
-        int numberOfSteps;
         while (true) {
             System.out.println("За какой день ввести количество шагов?");
             System.out.println("""
@@ -57,7 +56,7 @@ public class Main {
             Scanner scanner = new Scanner(System.in);
             if (scanner.hasNextInt()) {
                 command = scanner.nextInt();
-                
+
                 LocalDate todayDate = LocalDate.now(); // format: 2022-05-04 (4 мая 2022)
                 LocalDate yesterdayDate = LocalDate.of(todayDate.getYear(), todayDate.getMonth(), todayDate.getDayOfMonth() - 1);
 
@@ -81,9 +80,9 @@ public class Main {
                     System.out.println("Ввод значений отменён.");
                     return;
                 } else
-                    System.err.println("Введите номер команды из предложенных.");
+                    System.out.println("[!] Введите номер команды из предложенных.");
             } else
-                System.err.println("Введите команду числом.");
+                System.out.println("[!] Введите команду числом.");
         }
     }
 
@@ -103,7 +102,7 @@ public class Main {
                 if (command == 1) { // 1 — за этот месяц
                     month = StepTracker.getThisMonth();
                     if (!(StepTracker.months.containsKey(month))) { // если за текущий месяц нет статистики
-                        System.err.println("За текущий месяц ещё нет статистики.");
+                        System.out.println("[!] За текущий месяц ещё нет статистики.");
                         showStatistics();
                     } else {
                         StepTracker.printStatisticsForOneMonth(month);
@@ -112,7 +111,7 @@ public class Main {
                 } else if (command == 2) { // 2 - за прошлый месяц
                     month = StepTracker.getPreviousMonth();
                     if (!(StepTracker.months.containsKey(month))) { // если за текущий месяц нет статистики
-                        System.err.println("За прошлый месяц нет статистики.");
+                        System.out.println("[!] За прошлый месяц нет статистики.");
                         showStatistics();
                     } else {
                         StepTracker.printStatisticsForOneMonth(month);
@@ -127,9 +126,9 @@ public class Main {
                 } else if (command == 4) {
                     return;
                 } else
-                    System.err.println("Введите номер команды из предложенных.");
+                    System.out.println("[!] Введите номер команды из предложенных.");
             } else
-                System.err.println("Введите команду числом.");
+                System.out.println("[!] Введите команду числом.");
         }
     }
 
@@ -150,10 +149,10 @@ public class Main {
                     System.out.println("Изменение ежедневной цели отменено.");
                     return;
                 } else {
-                    System.err.println("Введите номер команды из предложенных.");
+                    System.out.println("[!] Введите номер команды из предложенных.");
                 }
             } else {
-                System.err.println("Введите команду числом.");
+                System.out.println("[!] Введите команду числом.");
             }
         }
     }
@@ -168,9 +167,9 @@ public class Main {
                 if (command == 1)
                     return;
                 else
-                    System.err.println("Введите 1, чтобы продолжить"); // сообщение, если введённая команда не 1
+                    System.out.println("[!] Введите 1, чтобы продолжить"); // сообщение, если введённая команда не 1
             } else
-                System.err.println("Введите 1, чтобы продолжить"); // сообщение, если введённая команда не целое число
+                System.out.println("[!] Введите 1, чтобы продолжить"); // сообщение, если введённая команда не целое число
         }
     }
 
